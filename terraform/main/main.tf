@@ -1,10 +1,13 @@
 locals {
-  rg_prefix = "rg-maugp"
+  # Align with Bicep naming
+  # Resource groups: rg-maugp-poc-<i>-plc
+  # VNets: vnet-maugp-poc-<i>-plc
+  first_rg_key = "rg-maugp-poc-1-plc"
 }
 
 # 10 resource groups
 resource "azurerm_resource_group" "rg" {
-  for_each = toset([for i in range(1, 11) : format("%s-%02d", local.rg_prefix, i)])
+  for_each = toset([for i in range(1, 11) : format("rg-maugp-poc-%d-plc", i)])
   name     = each.value
   location = var.location
   tags     = var.tags
@@ -20,25 +23,25 @@ module "vnet" {
   resource_group_name = each.value.name
   tags                = each.value.tags
 
-  ipam_pool_id        = var.ipam_pool_id
-  address_space       = ["10.${tonumber(split("-", each.value.name)[length(split("-", each.value.name)) - 1])}.0.0/16"]
-  default_subnet_cidr = "10.0.0.0/24" # used only when ipam_pool_id is empty
+  ipam_pool_id = var.ipam_pool_id
+  # Use the numeric token from naming (rg-maugp-poc-<i>-plc) for addressing
+  address_space         = ["10.${tonumber(split("-", each.value.name)[3])}.0.0/16"]
+  default_subnet_cidr   = "10.${tonumber(split("-", each.value.name)[3])}.0.0/24" # used only when ipam_pool_id is empty
   associate_route_table = var.route_table_id != ""
   route_table_id        = var.route_table_id
-  deploy_firewall       = each.key == "${local.rg_prefix}-01"
+  deploy_firewall       = tonumber(split("-", each.value.name)[3]) == 1
 }
 
 # Firewall only for index 1
 module "firewall" {
   source              = "../modules/firewall"
-  count               = 1
-  name                = "maugp-01"
+  name                = module.vnet[local.first_rg_key].name
   location            = var.location
-  resource_group_name = azurerm_resource_group.rg["${local.rg_prefix}-01"].name
+  resource_group_name = azurerm_resource_group.rg[local.first_rg_key].name
   tags                = var.tags
-  vnet_name           = module.vnet["${local.rg_prefix}-01"].name
-  afw_subnet_id       = module.vnet["${local.rg_prefix}-01"].afw_subnet_id
-  afw_mgmt_subnet_id  = module.vnet["${local.rg_prefix}-01"].afw_mgmt_subnet_id
+  vnet_name           = module.vnet[local.first_rg_key].name
+  afw_subnet_id       = module.vnet[local.first_rg_key].afw_subnet_id
+  afw_mgmt_subnet_id  = module.vnet[local.first_rg_key].afw_mgmt_subnet_id
 }
 
 # One VM per RG (in default subnet)

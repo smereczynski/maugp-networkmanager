@@ -5,14 +5,14 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "vnet" {
-  source              = "../modules/vnet"
-  name                = "vnet-maugp-11"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.rg.name
-  tags                = var.tags
-  ipam_pool_id        = var.ipam_pool_id
-  address_space       = ["10.11.0.0/16"]
-  default_subnet_cidr = "10.11.0.0/24"
+  source                = "../modules/vnet"
+  name                  = "vnet-maugp-11"
+  location              = var.location
+  resource_group_name   = azurerm_resource_group.rg.name
+  tags                  = var.tags
+  ipam_pool_id          = var.ipam_pool_id
+  address_space         = ["10.11.0.0/16"]
+  default_subnet_cidr   = "10.11.0.0/24"
   associate_route_table = var.route_table_id != ""
   route_table_id        = var.route_table_id
 }

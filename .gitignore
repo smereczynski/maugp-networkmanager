@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# Node (if any)
+node_modules/
+
+# Python (if any)
+__pycache__/
+*.pyc
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+*.tfplan
+override.tf
+override.tf.json
+
+# Azure Developer CLI / env
+.azure/
+
+# Logs
+*.log

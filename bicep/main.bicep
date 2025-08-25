@@ -37,7 +37,7 @@ resource rgs 'Microsoft.Resources/resourceGroups@2024-03-01' = [for (v, idx) in 
 
 // Create VNets in each resource group
 // VNet deployments via module per RG to avoid cross-loop indexing issues
-module vnetDeploy 'modules/vnet.bicep' = [for (v, idx) in vnetsPlan: {
+module vnetDeploy './modules/vnet.bicep' = [for (v, idx) in vnetsPlan: {
   name: 'vnet-${v.i}-deploy'
   scope: resourceGroup(v.rgName)
   params: {
@@ -47,15 +47,15 @@ module vnetDeploy 'modules/vnet.bicep' = [for (v, idx) in vnetsPlan: {
     vnetCidr: v.vnetCidr
     defaultSubnetCidr: v.subnetDefaultCidr
     deployFirewall: v.i == 1
-  ipamPoolId: ipamPoolId
-  // Attach a route table only when explicitly provided
-  defaultSubnetRouteTableId: defaultSubnetRouteTableId
+    ipamPoolId: ipamPoolId
+    // Attach a route table only when explicitly provided
+    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[idx] ]
 }]
 
 // Deploy Azure Firewall stack via dedicated module only for the first VNet
-module firewallDeploy 'modules/firewall.bicep' = [for (v, idx) in vnetsPlan: if (v.i == 1) {
+module firewallDeploy './modules/firewall.bicep' = [for (v, idx) in vnetsPlan: if (v.i == 1) {
   name: 'afw-${v.i}-deploy'
   scope: resourceGroup(v.rgName)
   params: {
@@ -69,7 +69,7 @@ module firewallDeploy 'modules/firewall.bicep' = [for (v, idx) in vnetsPlan: if 
 }]
 
 // Create one VM per resource group and VNet
-module vmDeploy 'modules/vm.bicep' = [for (v, idx) in vnetsPlan: {
+module vmDeploy './modules/vm.bicep' = [for (v, idx) in vnetsPlan: {
   name: 'vm-${v.i}-deploy'
   scope: resourceGroup(v.rgName)
   params: {

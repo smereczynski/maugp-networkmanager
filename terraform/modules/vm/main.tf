@@ -13,12 +13,12 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                = var.name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  size                = "Standard_B2ats_v2"
-  admin_username      = var.admin_username
-  admin_password      = var.admin_password
+  name                            = var.name
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  size                            = "Standard_B2ats_v2"
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
   disable_password_authentication = false
 
   network_interface_ids = [azurerm_network_interface.nic.id]

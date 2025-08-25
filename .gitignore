@@ -22,9 +22,10 @@ __pycache__/
 crash.log
 *.tfvars
 *.tfvars.json
-*.tfplan
+tfplan*
 override.tf
 override.tf.json
+.terraform.lock.hcl
 
 # Azure Developer CLI / env
 .azure/

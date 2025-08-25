@@ -1,5 +1,10 @@
+locals {
+  # Use the VNet name directly to match Bicep's baseName behavior
+  base = var.name
+}
+
 resource "azurerm_public_ip" "data_pip" {
-  name                = "${var.name}-afw-data-pip"
+  name                = "pip-azfw-${local.base}"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
@@ -9,7 +14,7 @@ resource "azurerm_public_ip" "data_pip" {
 }
 
 resource "azurerm_public_ip" "mgmt_pip" {
-  name                = "${var.name}-afw-mgmt-pip"
+  name                = "pip-azfw-mgmt-${local.base}"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
@@ -19,7 +24,7 @@ resource "azurerm_public_ip" "mgmt_pip" {
 }
 
 resource "azurerm_firewall_policy" "fw_policy" {
-  name                = "${var.name}-afw-policy"
+  name                = "afwp-basic-${local.base}"
   location            = var.location
   resource_group_name = var.resource_group_name
   sku                 = "Basic"
@@ -27,7 +32,7 @@ resource "azurerm_firewall_policy" "fw_policy" {
 }
 
 resource "azurerm_firewall_policy_rule_collection_group" "allowall" {
-  name               = "allowall"
+  name               = "rcg-default"
   firewall_policy_id = azurerm_firewall_policy.fw_policy.id
   priority           = 100
 
@@ -47,7 +52,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "allowall" {
 }
 
 resource "azurerm_firewall" "fw" {
-  name                = "${var.name}-afw"
+  name                = "afw-${local.base}"
   location            = var.location
   resource_group_name = var.resource_group_name
   sku_name            = "AZFW_VNet"
@@ -55,6 +60,7 @@ resource "azurerm_firewall" "fw" {
   threat_intel_mode   = "Alert"
   zones               = ["1", "2", "3"]
   tags                = var.tags
+  firewall_policy_id  = azurerm_firewall_policy.fw_policy.id
 
   ip_configuration {
     name                 = "data"

@@ -23,10 +23,14 @@ resource pip_afw 'Microsoft.Network/publicIPAddresses@2024-05-01' = {
   name: 'pip-azfw-${baseName}'
   location: location
   sku: {
-    name: 'Standard'
+  name: 'Standard'
+  tier: 'Regional'
   }
   properties: {
     publicIPAllocationMethod: 'Static'
+    ddosSettings: {
+      protectionMode: 'VirtualNetworkInherited'
+    }
   }
   tags: tags
 }
@@ -35,10 +39,14 @@ resource pip_afw_mgmt 'Microsoft.Network/publicIPAddresses@2024-05-01' = {
   name: 'pip-azfw-mgmt-${baseName}'
   location: location
   sku: {
-    name: 'Standard'
+  name: 'Standard'
+  tier: 'Regional'
   }
   properties: {
     publicIPAllocationMethod: 'Static'
+    ddosSettings: {
+      protectionMode: 'VirtualNetworkInherited'
+    }
   }
   tags: tags
 }
@@ -52,6 +60,8 @@ resource afw_policy 'Microsoft.Network/firewallPolicies@2024-05-01' = {
     sku: {
       tier: 'Basic'
     }
+  // Align with current state to avoid 'Delete' in what-if
+  threatIntelMode: 'Alert'
   }
 }
 
@@ -94,6 +104,8 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2024-05-01' = {
       name: 'AZFW_VNet'
       tier: 'Basic'
     }
+  // Align with current state to avoid 'Delete' in what-if
+  threatIntelMode: 'Alert'
     firewallPolicy: {
       id: afw_policy.id
     }

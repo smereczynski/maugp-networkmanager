@@ -10,6 +10,12 @@ param location string = deployment().location
 @description('Optional resource tags applied to created resources where applicable')
 param tags object = {}
 
+@description('Optional IPAM Pool resource ID used to auto-allocate prefixes for VNets and subnets (Azure Virtual Network Manager IPAM)')
+param ipamPoolId string = ''
+
+@description('Optional route table resource ID to attach to default subnets when present (only pass if it already exists).')
+param defaultSubnetRouteTableId string = ''
+
 // Sequence 1..10 (range(start, count) -> 10 elements: 1..10)
 var indices = range(1, 10)
 
@@ -41,6 +47,9 @@ module vnetDeploy 'modules/vnet.bicep' = [for (v, idx) in vnetsPlan: {
     vnetCidr: v.vnetCidr
     defaultSubnetCidr: v.subnetDefaultCidr
     deployFirewall: v.i == 1
+  ipamPoolId: ipamPoolId
+  // Attach a route table only when explicitly provided
+  defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[idx] ]
 }]

@@ -5,6 +5,10 @@ This repo contains Bicep templates to deploy:
 - Azure Firewall Basic (with Basic policy) in VNet #1 only
 - A one-off variant for VNet 11
 
+> Important
+>
+> The code on branch `main` uses a loop-based VNet module deployment that runs in parallel. When AVNM IPAM is enabled, deploying many VNets concurrently can fail due to Azure Network Manager IPAM API throttling (PreconditionFailed/retry later). Use branch `serialized` for a sequential VNet deployment that avoids throttling.
+
 ## Structure
 - `bicep/`
   - `main.bicep`: Orchestrates 10 RGs/VNets, Firewall in #1, VMs per RG. Supports AVNM IPAM and optional subnet route table.
@@ -46,6 +50,10 @@ az stack sub create \
 Notes:
 - IPAM: Template avoids mixing addressPrefixes with ipamPoolPrefixAllocations.
 - Default subnet route table is opt-in via parameter to preserve existing AVNM routing if any.
+
+Branch guidance:
+- main: Loop/parallel VNet creation (may hit IPAM throttling; kept for reference).
+- serialized: Explicit sequential VNet modules with enforced order to mitigate IPAM throttling.
 
 Security reminders:
 - Replace PoC VM password with SSH keys; store secrets in Key Vault.

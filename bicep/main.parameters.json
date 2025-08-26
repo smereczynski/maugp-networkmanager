@@ -3,6 +3,9 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": { "value": "polandcentral" },
-    "tags": { "value": { "project": "maugp", "env": "dev" } }
+    "tags": { "value": { "project": "maugp", "env": "dev" } },
+    "ipamPoolId": {
+      "value": "/subscriptions/d8207ac4-c426-49b0-8395-3f197ed7a82e/resourceGroups/rg-maugp-poc-plc/providers/Microsoft.Network/networkManagers/netman-maugp-poc-plc/ipamPools/pool1"
+    }
   }
 }

@@ -11,15 +11,10 @@ param tags object = {}
 @description('Optional IPAM Pool resource ID used to auto-allocate prefixes for VNets and subnets (Azure Virtual Network Manager IPAM)')
 param ipamPoolId string = ''
 
-@description('Optional route table resource ID to attach to default subnet (pass only if it already exists).')
-param defaultSubnetRouteTableId string = ''
-
 // Naming and addressing for #11
 var i = 11
 var rgName = 'rg-maugp-poc-${i}-plc'
 var vnetName = 'vnet-maugp-poc-${i}-plc'
-var vnetCidr = '10.${i}.0.0/16'
-var subnetDefaultCidr = '10.${i}.0.0/24'
 
 // Resource group
 resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
@@ -36,11 +31,8 @@ module vnetDeploy 'modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: vnetName
-    vnetCidr: vnetCidr
-    defaultSubnetCidr: subnetDefaultCidr
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rg ]
 }

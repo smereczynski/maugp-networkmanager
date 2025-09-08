@@ -10,12 +10,6 @@ param tags object = {}
 @description('VNet name')
 param vnetName string
 
-@description('VNet CIDR (e.g., 10.1.0.0/16)')
-param vnetCidr string
-
-@description('Default subnet CIDR (e.g., 10.1.0.0/24)')
-param defaultSubnetCidr string
-
 @description('Whether to deploy Azure Firewall Basic with Basic policy (true for index==1)')
 param deployFirewall bool = false
 
@@ -25,9 +19,9 @@ param ipamPoolId string = ''
 @description('Optional route table resource ID to attach to the default subnet (aligns with existing AVNM-managed route table). Leave empty to skip.')
 param defaultSubnetRouteTableId string = ''
 
-var vnetAddressSpace = empty(ipamPoolId)
-  ? { addressPrefixes: [ vnetCidr ] }
-  : { ipamPoolPrefixAllocations: [ { pool: { id: ipamPoolId }, numberOfIpAddresses: '65536' } ] }
+var vnetAddressSpace = { 
+  ipamPoolPrefixAllocations: [ { pool: { id: ipamPoolId }, numberOfIpAddresses: '65536' } ] 
+}
 
 resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   name: vnetName
@@ -38,9 +32,9 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   }
 }
 
-var defaultSubnetBase = empty(ipamPoolId)
-  ? { addressPrefixes: [ defaultSubnetCidr ] }
-  : { ipamPoolPrefixAllocations: [ { pool: { id: ipamPoolId }, numberOfIpAddresses: '256' } ] }
+var defaultSubnetBase = { 
+  ipamPoolPrefixAllocations: [ { pool: { id: ipamPoolId }, numberOfIpAddresses: '256' }] 
+}
 
 resource subnet_default 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
   name: 'default'

@@ -40,8 +40,6 @@ module vnet1 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-1-plc'
-    vnetCidr: '10.1.0.0/16'
-    defaultSubnetCidr: '10.1.0.0/24'
     deployFirewall: true
     ipamPoolId: ipamPoolId
   }
@@ -55,8 +53,6 @@ module vnet2 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-2-plc'
-    vnetCidr: '10.2.0.0/16'
-    defaultSubnetCidr: '10.2.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -70,8 +66,6 @@ module vnet3 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-3-plc'
-    vnetCidr: '10.3.0.0/16'
-    defaultSubnetCidr: '10.3.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -85,8 +79,6 @@ module vnet4 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-4-plc'
-    vnetCidr: '10.4.0.0/16'
-    defaultSubnetCidr: '10.4.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -100,8 +92,6 @@ module vnet5 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-5-plc'
-    vnetCidr: '10.5.0.0/16'
-    defaultSubnetCidr: '10.5.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -115,8 +105,6 @@ module vnet6 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-6-plc'
-    vnetCidr: '10.6.0.0/16'
-    defaultSubnetCidr: '10.6.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -130,8 +118,6 @@ module vnet7 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-7-plc'
-    vnetCidr: '10.7.0.0/16'
-    defaultSubnetCidr: '10.7.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -145,8 +131,6 @@ module vnet8 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-8-plc'
-    vnetCidr: '10.8.0.0/16'
-    defaultSubnetCidr: '10.8.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -160,8 +144,6 @@ module vnet9 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-9-plc'
-    vnetCidr: '10.9.0.0/16'
-    defaultSubnetCidr: '10.9.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }
@@ -175,8 +157,6 @@ module vnet10 './modules/vnet.bicep' = {
     location: location
     tags: tags
     vnetName: 'vnet-maugp-poc-10-plc'
-    vnetCidr: '10.10.0.0/16'
-    defaultSubnetCidr: '10.10.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
   }

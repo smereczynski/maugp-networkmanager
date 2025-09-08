@@ -13,9 +13,6 @@ param tags object = {}
 @description('Optional IPAM Pool resource ID used to auto-allocate prefixes for VNets and subnets (Azure Virtual Network Manager IPAM)')
 param ipamPoolId string = ''
 
-@description('Optional route table resource ID to attach to default subnets when present (only pass if it already exists).')
-param defaultSubnetRouteTableId string = ''
-
 // Sequence 1..10 (range(start, count) -> 10 elements: 1..10)
 var indices = range(1, 10)
 
@@ -47,7 +44,6 @@ module vnet1 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.1.0.0/24'
     deployFirewall: true
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[0] ]
 }
@@ -63,7 +59,6 @@ module vnet2 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.2.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[1], vnet1 ]
 }
@@ -79,7 +74,6 @@ module vnet3 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.3.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[2], vnet2 ]
 }
@@ -95,7 +89,6 @@ module vnet4 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.4.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[3], vnet3 ]
 }
@@ -111,7 +104,6 @@ module vnet5 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.5.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[4], vnet4 ]
 }
@@ -127,7 +119,6 @@ module vnet6 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.6.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[5], vnet5 ]
 }
@@ -143,7 +134,6 @@ module vnet7 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.7.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[6], vnet6 ]
 }
@@ -159,7 +149,6 @@ module vnet8 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.8.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[7], vnet7 ]
 }
@@ -175,7 +164,6 @@ module vnet9 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.9.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[8], vnet8 ]
 }
@@ -191,7 +179,6 @@ module vnet10 './modules/vnet.bicep' = {
     defaultSubnetCidr: '10.10.0.0/24'
     deployFirewall: false
     ipamPoolId: ipamPoolId
-    defaultSubnetRouteTableId: defaultSubnetRouteTableId
   }
   dependsOn: [ rgs[9], vnet9 ]
 }
